@@ -1,0 +1,11 @@
+{
+  "name": "tilemapper.js",
+  "version": "0.0.1",
+  "description": "A tool For 2d Tile Game Makers",
+  "main": "Demo.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Michael Walker",
+  "license": "MIT"
+}
