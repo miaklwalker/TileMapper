@@ -4,7 +4,18 @@ import clicked from "../Functions/clicker.js";
 import selectFactory from "../Functions/selectFactory.js";
 import setStored from "../Functions/setStored.js";
 
+/**
+ * @description Exposes function the greatly speed up the mapping of 2d tile based games
+ * @export
+ * @class TileMapper A tool for mapping 2d tile based games
+ */
 export default class TileMapper {
+  /**
+   *Creates an instance of TileMapper.
+   * @param {*} canvas
+   * @param {*} context
+   * @memberof TileMapper
+   */
   constructor(canvas, context) {
     this.canvas = canvas;
     this.context = context;
@@ -41,7 +52,10 @@ export default class TileMapper {
   clearTiles() {
     this.clickedTiles.clear();
   }
-
+  addTileDiminsions(...diminsions){
+    if (diminsions.length === 2 ){this.divisions = [...diminsions]}
+    else{console.warn('Please Provide 2 Numbers as arguments to set the grid diminsions ')}
+  }
   /**
    * @name exportAll 
    * @description Exports all clicked tiles into type Object or if no types then exports them to one Array
@@ -121,8 +135,8 @@ copyToClipBoard(){
    * @param {number} Hdivisions - the number of horizantal divisions on the screen
    * @param {number} Vdivisions - the number of vertical divisions on the screen
    */
-  makeGrid(Hdivisions = 3, Vdivisions = 3) {
-    this.divisions = [Hdivisions, Vdivisions];
+  makeGrid() {
+    context.strokeStyle = "white";
     gridMaker(...this.divisions, this.canvas, this.context);
   }
   /**
@@ -135,4 +149,21 @@ copyToClipBoard(){
     this.selectElements.push(select);
     document.body.append(select);
   }
+}
+
+/**
+ * @name tilemapperInit
+ * @description When provided the proper arguements it configs a tile mapper and returns based on your project
+ * @export
+ * @param {*} canvas the project canvas
+ * @param {*} context the canvas's context
+ * @param {*} diminsions the diminsions of the grid you desire ex[10,10] this is done as an array
+ * @returns a new TileMapper
+ */
+export function tilemapperInit(canvas,context,diminsions){
+  let tilemapper = new TileMapper(canvas,context);
+  tilemapper.addTileDiminsions(...diminsions);
+  tilemapper.addScreenMap()
+  tilemapper.clickTile()
+  return tilemapper
 }
