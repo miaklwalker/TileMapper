@@ -12,7 +12,7 @@ export default class TileMapper {
     this.tiles = [];
     this.clickedTiles = new Set();
     this.types = [];
-    this.typeColor = { clickedTiles: "White" };
+    this.typeColor = {  };
     this.selectElements = [];
   }
   /**
@@ -44,7 +44,7 @@ export default class TileMapper {
 
   /**
    * @name exportAll 
-   * @description Exports all clicked tiles into type Object or if no types then exports them to one Set
+   * @description Exports all clicked tiles into type Object or if no types then exports them to one Array
    */
   exportAll() {
     let all = {};
@@ -57,11 +57,18 @@ export default class TileMapper {
         all[type] = placeholder;
       });
     } else {
-      all = this.clickedTiles;
+      all = [...this.clickedTiles];
     }
-    console.log(all)
     return all;
   }
+
+  /**
+   * @name copyToClipBoard
+   * @description internally calls export all then writes the results to the clipboard for easy copy/paste access
+   */
+copyToClipBoard(){
+  navigator.clipboard.writeText(JSON.stringify(this.exportAll()));
+}
   /**
    * @name clickTile
    * @description adds an event listner to the canvas allowing the user to click to add tiles
@@ -77,8 +84,8 @@ export default class TileMapper {
         );
         let selectedSet = this[selectedTypes];
         setStored(selectedSet, activatedTile);
-      }
-      setStored(this.clickedTiles, activatedTile);
+        }
+        setStored(this.clickedTiles, activatedTile);
     });
   }
   /**
@@ -89,6 +96,7 @@ export default class TileMapper {
     const { width: w, height: h } = this.canvas;
     const [x1, y1] = this.divisions;
     if (this.clickedTiles.size > 0) {
+      if(this.types.length>0){
       this.types.forEach(type => {
         this[type].forEach(tile => {
           const [x, y] = tile;
@@ -97,6 +105,14 @@ export default class TileMapper {
           this.context.fillRect(...diminsions);
         });
       });
+    }else{
+      this.clickedTiles.forEach(tile=>{
+        const [x, y] = tile;
+          this.context.fillStyle = 'white';
+          let diminsions = [x, y, w / x1, h / y1];
+          this.context.fillRect(...diminsions);
+      })
+    }
     }
   }
   /**
