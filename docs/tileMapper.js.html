@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: tileMapper.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: tileMapper.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import gridMaker from "../Functions/makeGrid.js";
+import screenMapper from "../Functions/screenMapper.js";
+import clicked from "../Functions/clicker.js";
+import selectFactory from "../Functions/selectFactory.js";
+import setStored from "../Functions/setStored.js";
+
+/**
+ * @description Exposes function the greatly speed up the mapping of 2d tile based games
+ * @export
+ * @class TileMapper A tool for mapping 2d tile based games
+ */
+export default class TileMapper {
+  /**
+   *Creates an instance of TileMapper.
+   * @param {*} canvas
+   * @param {*} context
+   * @memberof TileMapper
+   */
+  constructor(canvas, context) {
+    this.canvas = canvas;
+    this.context = context;
+    this.divisions = 0;
+    this.tiles = [];
+    this.clickedTiles = new Set();
+    this.types = [];
+    this.typeColor = {  };
+    this.selectElements = [];
+  }
+  /**
+   *@name addScreenMap
+   *@description Maps the canvas to an array based on the grid diminsions
+   *
+   */
+  addScreenMap() {
+    let computedTiles = screenMapper(this.canvas, this.divisions);
+    this.tiles = computedTiles;
+  }
+  /**
+   *
+   * @param {string} type adds a new type of tile to the tile mapper
+   * @param {string} color Colors selections of this type this color
+   */
+  addNewType(type, color) {
+    this[type] = new Set();
+    this.typeColor[type] = color;
+    this.types.push(type);
+  }
+  /**
+   * @name clearTiles
+   * @description This will clear all tiles on screen
+   */
+  clearTiles() {
+    this.clickedTiles.clear();
+  }
+  addTileDiminsions(...diminsions){
+    if (diminsions.length === 2 ){this.divisions = [...diminsions]}
+    else{console.warn('Please Provide 2 Numbers as arguments to set the grid diminsions ')}
+  }
+  /**
+   * @name exportAll 
+   * @description Exports all clicked tiles into type Object or if no types then exports them to one Array
+   */
+  exportAll() {
+    let all = {};
+    if (this.types.length > 0) {
+      this.types.forEach(type => {
+        let placeholder = [];
+        this[type].forEach(element => {
+          placeholder.push(element);
+        });
+        all[type] = placeholder;
+      });
+    } else {
+      all = [...this.clickedTiles];
+    }
+    return all;
+  }
+
+  /**
+   * @name copyToClipBoard
+   * @description internally calls export all then writes the results to the clipboard for easy copy/paste access
+   */
+copyToClipBoard(){
+  navigator.clipboard.writeText(JSON.stringify(this.exportAll()));
+}
+  /**
+   * @name clickTile
+   * @description adds an event listner to the canvas allowing the user to click to add tiles
+   */
+  clickTile() {
+    let activatedTile;
+    this.canvas.addEventListener("click", event => {
+      let selectedTypes;
+      activatedTile = clicked(event, this.tiles);
+      if (this.selectElements.length > 0) {
+        selectedTypes = this.selectElements.map(
+          selectedElement => selectedElement.value
+        );
+        let selectedSet = this[selectedTypes];
+        setStored(selectedSet, activatedTile);
+        }
+        setStored(this.clickedTiles, activatedTile);
+    });
+  }
+  /**
+   * @name drawSelection
+   * @description will draw all userClicked tiles to the screen once
+   */
+  drawSelection() {
+    const { width: w, height: h } = this.canvas;
+    const [x1, y1] = this.divisions;
+    if (this.clickedTiles.size > 0) {
+      if(this.types.length>0){
+      this.types.forEach(type => {
+        this[type].forEach(tile => {
+          const [x, y] = tile;
+          this.context.fillStyle = this.typeColor[type];
+          let diminsions = [x, y, w / x1, h / y1];
+          this.context.fillRect(...diminsions);
+        });
+      });
+    }else{
+      this.clickedTiles.forEach(tile=>{
+        const [x, y] = tile;
+          this.context.fillStyle = 'white';
+          let diminsions = [x, y, w / x1, h / y1];
+          this.context.fillRect(...diminsions);
+      })
+    }
+    }
+  }
+  /**
+   * @name makeGrid
+   * @description Takes to numbers as arguments and draws a grid to the screen, this also declares the grid diminsions for TileMapper default is three for each
+   * @param {number} Hdivisions - the number of horizantal divisions on the screen
+   * @param {number} Vdivisions - the number of vertical divisions on the screen
+   */
+  makeGrid() {
+    context.strokeStyle = "white";
+    gridMaker(...this.divisions, this.canvas, this.context);
+  }
+  /**
+   *
+   * @param {string} id This ID is used to set the id for the HTMLSelectElement
+   * @param {Array} options This is an array of options for the HTMLSelectElement
+   */
+  makeSelectElement(id, options) {
+    let select = selectFactory(id, options);
+    this.selectElements.push(select);
+    document.body.append(select);
+  }
+}
+
+/**
+ * @name tilemapperInit
+ * @description When provided the proper arguements it configs a tile mapper and returns based on your project
+ * @export
+ * @param {*} canvas the project canvas
+ * @param {*} context the canvas's context
+ * @param {*} diminsions the diminsions of the grid you desire ex[10,10] this is done as an array
+ * @returns a new TileMapper
+ */
+export function tilemapperInit(canvas,context,diminsions){
+  let tilemapper = new TileMapper(canvas,context);
+  tilemapper.addTileDiminsions(...diminsions);
+  tilemapper.addScreenMap()
+  tilemapper.clickTile()
+  return tilemapper
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="module.exports.html">module.exports</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addNewType">addNewType</a></li><li><a href="global.html#addScreenMap">addScreenMap</a></li><li><a href="global.html#clearTiles">clearTiles</a></li><li><a href="global.html#clickTile">clickTile</a></li><li><a href="global.html#copyToClipBoard">copyToClipBoard</a></li><li><a href="global.html#drawSelection">drawSelection</a></li><li><a href="global.html#exportAll">exportAll</a></li><li><a href="global.html#makeGrid">makeGrid</a></li><li><a href="global.html#makeSelectElement">makeSelectElement</a></li><li><a href="global.html#tilemapperInit">tilemapperInit</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Thu Sep 12 2019 20:29:28 GMT-0500 (Central Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

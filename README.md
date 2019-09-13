@@ -54,7 +54,8 @@ Documentation
 <a name="anchor-demos"></a>
 Demos
 ===============================================================================
-
+A Very Basic Working Demo with a plain black background
+(<https://codesandbox.io/s/tilemapperjs-gimgd>)
 
 <a name="anchor-usage"></a>
 Usage
