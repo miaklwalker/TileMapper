@@ -15,7 +15,7 @@ document.body.appendChild(exportButton);
 let types = ["Secret", "Cave", "Wall", "Dungeon"];
 let colors = ["red", "blue", "green", "yellow"];
 // using a built in INIT method to create a tilemapper
-let tilemapper = new tilemapperInit(canvas, context,[10,10]);
+let tilemapper = tilemapperInit(canvas, context,[10,10]);
 // adding the export functionality
 exportButton.addEventListener("click", () => tilemapper.copyToClipBoard());
 
