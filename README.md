@@ -136,7 +136,7 @@ tilemapper.addTileDiminsions([10,10])
 **TileMapper** 
 
 First you will need to decide the types for your project.
-Then you will need to either pass a list of your types
+Then you will need to either pass a type and color one at a time
 
 ```JavaScript
 let tilemapper = new TileMapper(canvas,context)
@@ -156,8 +156,10 @@ let types = {
 }
 tilemapper.addNewTypes(types);
 ```
+
 After adding types and diminsions to the project you will need to map your canvas
-**Note:** You can skip this step if you used the init method
+
+>**Note:** You can skip this step if you used the init method
 
 ```JavaScript
 let tilemapper = new TileMapper(canvas,context)
@@ -170,8 +172,9 @@ let types = {
 tilemapper.addNewTypes(types);
 tilemapper.addScreenMap()
 ```
-Lastly you will need to setup the click screen functionality after the previous steps are down
-**Note:** You can also skip this step if you used the init method
+Lastly you will need to setup the click screen functionality after the previous steps are done
+
+>**Note:** You can also skip this step if you used the init method
 
 ```JavaScript
 let tilemapper = new TileMapper(canvas,context)
