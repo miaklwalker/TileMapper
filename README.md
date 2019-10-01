@@ -10,9 +10,6 @@ ____
 
 TileMapJS is a Javascript library that gives the user a visual and haptic interface that greatly speeds up adding elements to the screen.
 
-
-
-
 - [TileMapJS](#tilemapjs)
   - [A Tool for Mapping screens in TileBased games](#a-tool-for-mapping-screens-in-tilebased-games)
     - [Usage](#usage)
@@ -117,7 +114,7 @@ setup();
 Getting Started
 ===============================================================================
 This can be easily added to an existing project by inserting it into your draw loop,
-From there you can easily map new terrain or existing terrain
+From there you can easily map anything in your grid based project or game
 
 <a name="anchor-step-1"></a>
 ## 1. Adding a Tilemapper to your project
@@ -129,7 +126,7 @@ let tilemapper = tilemapperInit(canvas, context,[10,10]);
 
 ```Javascript
 // using the new constructor
-let tilemapper = TileMapper(canvas,context);
+let tilemapper = new TileMapper(canvas,context);
 tilemapper.addTileDiminsions([10,10])
 ```
 
@@ -138,22 +135,55 @@ tilemapper.addTileDiminsions([10,10])
 
 **TileMapper** 
 
-
-
+First you will need to decide the types for your project.
+Then you will need to either pass a list of your types
 
 ```JavaScript
+let tilemapper = new TileMapper(canvas,context)
+tilemapper.addDiminsions([10,10]);
+tilemapper.addNewType(type,color);
 ```
 
+or you can add them en masse with a type config object
 
 ```JavaScript
+let tilemapper = new TileMapper(canvas,context)
+tilemapper.addDiminsions([10,10]);
+let types = {
+  hero:"red",
+  villian:"black",
+  npc:"yellow"
+}
+tilemapper.addNewTypes(types);
 ```
-
+After adding types and diminsions to the project you will need to map your canvas
+**Note:** You can skip this step if you used the init method
 
 ```JavaScript
+let tilemapper = new TileMapper(canvas,context)
+tilemapper.addDiminsions([10,10]);
+let types = {
+  hero:"red",
+  villian:"black",
+  npc:"yellow"
+}
+tilemapper.addNewTypes(types);
+tilemapper.addScreenMap()
 ```
-
+Lastly you will need to setup the click screen functionality after the previous steps are down
+**Note:** You can also skip this step if you used the init method
 
 ```JavaScript
+let tilemapper = new TileMapper(canvas,context)
+tilemapper.addDiminsions([10,10]);
+let types = {
+  hero:"red",
+  villian:"black",
+  npc:"yellow"
+}
+tilemapper.addNewTypes(types);
+tilemapper.addScreenMap()
+tilemapper.clickTile()
 ```
 
 <a name="anchor-step-3"></a>

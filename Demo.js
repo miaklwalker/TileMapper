@@ -3,21 +3,18 @@ import { tilemapperInit } from "./TileMapper/src/components/class/tileMapper.js"
 let canvas = document.createElement("canvas");
 let context = canvas.getContext("2d");
 // Creating a HTMLButton for the export function of the tilemapper
-let exportButton = document.createElement("button");
-exportButton.innerText = "Export All";
+
 // Setting the width and height of the canvas
 canvas.height = 480;
 canvas.width = 512;
 // adding the canvas and the export button to the dom
 document.body.appendChild(canvas);
-document.body.appendChild(exportButton);
 // Creating an array of types to use for the types in the mapper
 let types = ["Secret", "Cave", "Wall", "Dungeon"];
 let colors = ["red", "blue", "green", "yellow"];
 // using a built in INIT method to create a tilemapper
 let tilemapper = tilemapperInit(canvas, context,[10,10]);
 // adding the export functionality
-exportButton.addEventListener("click", () => tilemapper.copyToClipBoard());
 
 
 /* ************************
