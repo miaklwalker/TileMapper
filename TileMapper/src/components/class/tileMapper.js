@@ -102,11 +102,8 @@ export default class TileMapper {
    * @description internally calls export all then writes the results to the clipboard for easy copy/paste access
    */
   copyToClipBoard() {
-    if (this.outputType) {
-      navigator.clipboard.writeText(JSON.stringify(this.exportAllAsObject()));
-    } else {
-      navigator.clipboard.writeText(JSON.stringify(this.exportAllAsArray()));
-    }
+    let output = this.outputType ? this.exportAllAsObject : this.exportAllAsArray
+      navigator.clipboard.writeText(JSON.stringify(output()));
   }
 
   /**

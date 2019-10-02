@@ -192,12 +192,47 @@ tilemapper.clickTile()
 <a name="anchor-step-3"></a>
 ## 3. Exporting From TileMapper
 
+Next we will need to " Export " the data from the tileMapper.
 
+You will need to decide based on your project whether you export as an Array or as an Object.
+
+To export it as an array try the following.
 ```JavaScript
+let tilemapper = new TileMapper(canvas,context)
+tilemapper.addDiminsions([10,10]);
+let types = {
+  hero:"red",
+  villian:"black",
+  npc:"yellow"
+}
+tilemapper.addNewTypes(types);
+tilemapper.addScreenMap();
+tilemapper.clickTile();
+tilemapper.output = 'array';
+tilemapper.createExportButton()
 ```
 
+or for example you are creating level objects.
+
+You can then use the output from the mapper to create levels!
+
+but we will look at that next.
+
+if you need tilemapper to export as an Object simply change the output to Object.  
 
 ```JavaScript
+let tilemapper = new TileMapper(canvas,context)
+tilemapper.addDiminsions([10,10]);
+let types = {
+  hero:"red",
+  villian:"black",
+  npc:"yellow"
+}
+tilemapper.addNewTypes(types);
+tilemapper.addScreenMap();
+tilemapper.clickTile();
+tilemapper.output = 'object';
+tilemapper.createExportButton()
 ```
 
 <a name="anchor-step-4"></a>
