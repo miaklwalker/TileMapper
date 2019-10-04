@@ -172,7 +172,11 @@ export default class TileMapper {
     } else {
       all = [...this.clickedTiles];
     }
+    if (this.tileFormat){
+      return tileFormatOutput(all,...this.divisions)
+    }else{
     return all;
+    }
   }
 
   /**
