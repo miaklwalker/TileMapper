@@ -24,7 +24,6 @@ TileMapJS is a Javascript library that gives the user a visual and haptic interf
   - [4.Choosing Types](#4choosing-types)
   - [5. Using the Mapped Data](#5-using-the-mapped-data)
   - [6. Some final Remarks](#6-some-final-remarks)
-- [Lines](#lines)
 - [Rendering](#rendering)
 - [FAQ](#faq)
 
@@ -377,18 +376,21 @@ tilemapper.tileFormat = true
 
 */
 ```
+
  To get more normalized results!
-<a name="anchor-lines"></a>
-Lines
-===============================================================================
-
-```JavaScript
-
-```
 
 <a name="anchor-rendering"></a>
 Rendering
 ===============================================================================
+
+Rendering couldn't be easier just add the following to your Draw Loop
+``` JavaScript
+function draw(){
+  // other things that happen in a draw loop
+  tilemapper.drawSelection();
+  tilemapper.makeGrid();
+}
+```
 
 <a name="anchor-faq"></a>
 FAQ
