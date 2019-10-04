@@ -25,7 +25,6 @@ TileMapJS is a Javascript library that gives the user a visual and haptic interf
   - [5. Using the Mapped Data](#5-using-the-mapped-data)
   - [6. Some final Remarks](#6-some-final-remarks)
 - [Rendering](#rendering)
-- [FAQ](#faq)
 
 <a name="anchor-installation"></a>
 Installation
@@ -391,7 +390,3 @@ function draw(){
   tilemapper.makeGrid();
 }
 ```
-
-<a name="anchor-faq"></a>
-FAQ
-===============================================================================
