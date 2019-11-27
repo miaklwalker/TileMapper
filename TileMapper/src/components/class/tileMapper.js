@@ -4,6 +4,15 @@ import clicked from "../Functions/clicker.js";
 import selectFactory from "../Functions/selectFactory.js";
 import setStored from "../Functions/setStored.js";
 
+
+// Todo Add a TILEMAPPER master class that adds multiple instanaces of tilemapper to an array and keeeps trackl of them 
+// so the user can have mul;tiple types
+
+
+
+
+
+
 let typeConversion = (element, type) => {
   const [x, y] = element;
   return {
